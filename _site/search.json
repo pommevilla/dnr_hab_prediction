@@ -5,5 +5,19 @@
     "title": "dnr_hab_prediction",
     "section": "",
     "text": "This is a Quarto document. To learn more about Quarto visit https://quarto.org."
+  },
+  {
+    "objectID": "docs\\data_prep.html",
+    "href": "docs\\data_prep.html",
+    "title": "Data cleaning",
+    "section": "",
+    "text": "Reading, editing, cleaning."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DNR HAB Prediction",
+    "section": "",
+    "text": "This repo contains the workflow used in constructing the harmful algal bloom prediction model used on the data gathered by the Iowa Department of Natural Resources between 2018 and 2021."
   }
 ]

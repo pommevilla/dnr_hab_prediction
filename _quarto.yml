@@ -10,12 +10,17 @@ site:
   site-url: https://pommevilla.github.io/dnr_hab_prediction
   repo-url: https://github.com/pommevilla/dnr_hab_prediction
   page-navigation: true
+
   sidebar:
     title: "DNR HAB Prediction"
     style: "docked"
     contents:
       - text: "Welcome"
         file: index.qmd
+      - section: "Data prep"
+        contents:
+          - docs/data_prep.qmd
+
   navbar:
     background: dark
     search: true
