@@ -1,0 +1,5 @@
+---
+title: "DNR HAB Prediction"
+---
+
+This repo contains the workflow used in constructing the harmful algal bloom prediction model used on the data gathered by the Iowa Department of Natural Resources between 2018 and 2021.

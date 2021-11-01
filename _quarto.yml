@@ -1,0 +1,40 @@
+project:
+  title: "dnr_hab_prediction"
+  output-dir: _site
+  type: site
+
+execute:
+  freeze: true
+
+site:
+  site-url: https://pommevilla.github.io/dnr_hab_prediction
+  repo-url: https://github.com/pommevilla/dnr_hab_prediction
+  page-navigation: true
+  sidebar:
+    title: "DNR HAB Prediction"
+    style: "docked"
+    contents:
+      - text: "Welcome"
+        file: index.qmd
+  navbar:
+    background: dark
+    search: true
+    right:
+      - text: "Intro"
+        file: index.qmd
+
+
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: [cosmo, styles/theme-dark.scss]
+    code-background: true
+    code-copy: true
+    css: styles/styles.css
+    toc: true
+
+
+
+
