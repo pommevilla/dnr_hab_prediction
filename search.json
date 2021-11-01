@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "docs/data_prep.html",
+    "href": "docs/data_prep.html",
+    "title": "Data cleaning",
+    "section": "",
+    "text": "Reading, editing, cleaning."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "DNR HAB Prediction",
