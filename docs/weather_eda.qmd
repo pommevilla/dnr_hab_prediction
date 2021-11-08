@@ -13,8 +13,11 @@ library(tidymodels)
 library(scales)
 library(lubridate)
 library(ggtext)
+library(showtext)
 library(glue)
-library(gt)
+
+font_add_google(family = "patua-one", "Patua One")
+showtext.auto()
 
 theme_set(theme_light())
 tidymodels_prefer(quiet = TRUE)
@@ -22,17 +25,12 @@ tidymodels_prefer(quiet = TRUE)
 
 
 ```{r}
-station_locations <- readr::read_csv("data/station_locations.csv")
-weather_imputed <- readRDS("data/weather_imputed.rds") %>% 
+station_locations <- readr::read_csv("../data/station_locations.csv")
+weather_imputed <- readRDS("../data/weather_imputed.rds") %>% 
   as_tibble()
-weather <- readRDS("data/weather.rds") %>% 
+weather <- readRDS("../data/weather.rds") %>% 
   as_tibble()
-wu_stations <- readr::read_csv("data/wu_stations.csv")
-```
-
-```{r}
-weather %>% 
-  head()
+wu_stations <- readr::read_csv("../data/wu_stations.csv")
 ```
 
 ```{r}
