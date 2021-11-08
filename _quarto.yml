@@ -3,8 +3,6 @@ project:
   output-dir: _site
   type: site
 
-execute:
-  freeze: true
 
 site:
   site-url: https://pommevilla.github.io/dnr_hab_prediction
@@ -20,6 +18,8 @@ site:
       - section: "Data prep"
         contents:
           - docs/data_prep.qmd
+          - text: "Weather EDA"
+            file: docs/weather_eda.qmd
 
   navbar:
     background: dark
