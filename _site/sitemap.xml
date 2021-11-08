@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://pommevilla.github.io/dnr_hab_prediction/dnr_hab_prediction.html</loc>
-    <lastmod>2021-11-01T15:15:16.330Z</lastmod>
+    <loc>https://pommevilla.github.io/dnr_hab_prediction/docs/weather_eda.html</loc>
+    <lastmod>2021-11-08T04:54:37.532Z</lastmod>
   </url>
   <url>
     <loc>https://pommevilla.github.io/dnr_hab_prediction/docs/data_prep.html</loc>
-    <lastmod>2021-11-01T15:31:07.116Z</lastmod>
+    <lastmod>2021-11-08T04:54:39.149Z</lastmod>
   </url>
   <url>
     <loc>https://pommevilla.github.io/dnr_hab_prediction/index.html</loc>
-    <lastmod>2021-11-01T15:30:32.967Z</lastmod>
+    <lastmod>2021-11-08T04:54:39.330Z</lastmod>
   </url>
 </urlset>
