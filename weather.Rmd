@@ -1,0 +1,154 @@
+---
+title: "eda"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(tidymodels)
+library(scales)
+library(lubridate)
+library(ggtext)
+library(glue)
+library(gt)
+
+theme_set(theme_light())
+tidymodels_prefer(quiet = TRUE)
+```
+
+
+```{r}
+station_locations <- readr::read_csv("data/station_locations.csv")
+weather_imputed <- readRDS("data/weather_imputed.rds") %>% 
+  as_tibble()
+weather <- readRDS("data/weather.rds") %>% 
+  as_tibble()
+wu_stations <- readr::read_csv("data/wu_stations.csv")
+```
+
+```{r}
+weather %>% 
+  head()
+```
+
+```{r}
+weather %>% 
+  summarise(across(avg_temp:low_pressure, ~sum(is.na(.)))) %>% 
+  pivot_longer(cols = everything()) %>% 
+  mutate(name = str_to_title(str_replace(name, "_", " "))) %>% 
+  ggplot(aes(value, name)) +
+  geom_col() +
+  scale_x_continuous(expand = expansion(add = 0, mult = c(0, 0.1))) 
+```
+
+```{r}
+weather %>% 
+  rowwise %>% 
+  mutate(na_count = sum(is.na(c_across(avg_temp:low_pressure))),
+         year = as.factor(year(Date))) %>% 
+  select(Location, na_count, year) %>% 
+  group_by(Location, year) %>% 
+  summarise(na_count = sum(na_count)) %>% 
+  ggplot(aes(year, na_count)) +
+  geom_col() +
+  facet_wrap(~ Location, scales = "free")
+```
+
+Lot of data missing from Lake of Three Fires. All missing values are from 2018
+
+```{r}
+title = "Every environmental measurement from <span style='color: #0000FF'>the Lake of Three Fires</span> was missing in 2018"
+
+weather %>% 
+  filter(str_detect(Location, "Three")) %>% 
+  group_by(year(Date)) %>% 
+  summarise(across(avg_temp:low_pressure, ~ sum(is.na(.)))) %>% 
+  pivot_longer(cols = avg_temp:low_pressure) %>% 
+  mutate(Year = as.factor(`year(Date)`), .keep = "unused") %>% 
+  mutate(name = str_to_title(str_replace(name, "_", " "))) %>% 
+  ggplot(aes(value, name)) +
+  geom_col(aes(fill = Year)) +
+  facet_wrap(~ Year) +
+  theme(
+    legend.position = "none",
+    plot.title = element_textbox_simple(family = "patua-one", size=30,
+                                        lineheight = 1,
+                                        color = "#000000",
+                                        margin = margin(b=10)),
+    strip.background = element_rect(fill = NA, color = NA, size = 1),
+    strip.text = element_text(family = "patua-one", color = "#000000"),
+    axis.ticks = element_blank(),
+    axis.text = element_text(family = "patua-one"), 
+    panel.border = element_rect(fill = NA, color = NA, size = 1),
+    axis.title = element_text(family = "patua-one"),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+  ) +
+  labs(
+    x = "Observations missing",
+    y = "Variable",
+    title = title
+  ) +
+  scale_x_continuous(expand = expansion(add = 0, mult = c(0, 0.05)))
+```
+
+High temperature is normal, low is vaguely normal
+
+```{r}
+weather %>% 
+  select(Location:Date, contains("wind")) %>% 
+  pivot_longer(cols = contains("wind")) %>% 
+  mutate(name = str_replace(name, "_wind", ""),
+         name = case_when(
+           name == "avg" ~ "Average",
+           TRUE ~ str_to_title(name)
+         )) %>% 
+  filter(name == "Average") %>% 
+  ggplot(aes(value)) +
+  geom_histogram(aes(fill = name)) + 
+  scale_x_log10()
+
+```
+
+```{r}
+
+title = "Average environmental measurments <span style='color: #0000FF'>generally decreased</span> between 2018 and 2019."
+
+weather %>% 
+  mutate(year = as.factor(year(Date)), .keep = "unused") %>% 
+  select(Location, Station, year, starts_with("avg")) %>% 
+  group_by(Location, year) %>% 
+  summarise(across(avg_temp:avg_gust, ~ mean(., na.rm = TRUE))) %>% 
+  mutate(across(avg_temp:avg_gust, ~  .x - dplyr::lag(.x))) %>% 
+  filter(year == 2019) %>% 
+  # filter(Location %in% slice_head(unique(weather$Location), n = 20)) %>% 
+  filter(Location %in% unique(weather$Location)[1:36]) %>% 
+  pivot_longer(avg_temp:avg_gust) %>% 
+  mutate(diff = ifelse(value < 0, "decrease", "increase")) %>% 
+  mutate(name = str_to_title(str_replace(name, "_", " "))) %>% 
+  ggplot(aes(name, value, fill = diff)) +
+  geom_col() +
+  facet_wrap(~ Location, nrow = 6) +
+  theme(
+    legend.position = "none",
+    axis.text.x = element_text(angle = 90),
+    plot.title = element_textbox_simple(
+      family = "patua-one",
+      size = 30,
+      lineheight = 1,
+      color = "#000000",
+      margin = margin(b = 10)),
+    axis.ticks = element_blank()
+  ) + 
+  labs(
+    title = title,
+    x = "Measurement",
+    y = ""
+  )
+```
+
